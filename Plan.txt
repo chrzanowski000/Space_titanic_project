@@ -1,0 +1,9 @@
+THE PLAN
+
+1. Load data.
+2. Describe dataset (correlations, distributions, visualization -  only things that really will be useful)
+3. Create NN class
+4. Choose:
+    a) optimizer
+    b
+3. Validate the model
