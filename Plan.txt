@@ -6,4 +6,5 @@ THE PLAN
 4. Choose:
     a) optimizer
     b
-3. Validate the model
+5. Train model
+6. Validate the model
