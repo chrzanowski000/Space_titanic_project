@@ -1,16 +1,22 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import norm
+import pandas as pd
+
 def analyze(df_train):
     '''
     df_train w formacie pandas.DataFrame
     '''
 
     import numpy as np
-    import matplotlib.pyplot as plt
+    
     import seaborn as sns
     from scipy.stats import norm
     import pandas as pd
 
     # pie plots for categorical variables
-
+    import matplotlib.pyplot as plt
     fig, axis = plt.subplots(1, 2)
 
     for num, name in enumerate(["HomePlanet", "Destination"]):
@@ -145,3 +151,6 @@ def analyze(df_train):
     plt.show()
 
     # we could also check and plot dependence of "transported" with respect to other variables, but come on... it's machine learning, let computer figure 
+
+data = pd.read_csv('train.csv')
+analyze(data)
