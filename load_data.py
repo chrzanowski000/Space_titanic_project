@@ -70,7 +70,7 @@ def load_data(train, test_data, test_labels):
     train_data=[]
     x=encoding(df_train)
     for i in range(len(x)):
-        train_data.append([torch.tensor(np.array(tuple(x[i]))), torch.tensor([df_train.iloc[i,13]])])
+        train_data.append([torch.tensor(np.array(tuple(x[i])), requires_grad=True, dtype=torch.float64), torch.tensor([df_train.iloc[i,13]], requires_grad=True, dtype=torch.float64)])
 
     return train_data, test_data
 
