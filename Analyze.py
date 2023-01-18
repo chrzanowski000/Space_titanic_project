@@ -1,4 +1,4 @@
-def analyze():
+def analyze(file_name):
     '''
     Analyze train data.
     '''
@@ -11,7 +11,7 @@ def analyze():
 
     # pie plots for categorical variables
     
-    df_train = pd.read_csv("train.csv")
+    df_train = pd.read_csv(file_name)
 
     fig, axis = plt.subplots(1, 2)
 
