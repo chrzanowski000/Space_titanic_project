@@ -1,6 +1,6 @@
-def analyze(df_train):
+def analyze():
     '''
-    df_train w formacie pandas.DataFrame
+    Analyze train data.
     '''
 
     import numpy as np
@@ -11,6 +11,8 @@ def analyze(df_train):
 
     # pie plots for categorical variables
     
+    df_train = pd.read_csv("train.csv")
+
     fig, axis = plt.subplots(1, 2)
 
     for num, name in enumerate(["HomePlanet", "Destination"]):
