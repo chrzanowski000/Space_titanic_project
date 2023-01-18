@@ -1,4 +1,7 @@
 def analyze(df_train):
+    '''
+    df_train w formacie pandas.DataFrame
+    '''
 
     # pie plots for categorical variables
 
