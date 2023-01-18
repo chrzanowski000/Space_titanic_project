@@ -3,6 +3,12 @@ def analyze(df_train):
     df_train w formacie pandas.DataFrame
     '''
 
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from scipy.stats import norm
+    import pandas as pd
+
     # pie plots for categorical variables
 
     fig, axis = plt.subplots(1, 2)
