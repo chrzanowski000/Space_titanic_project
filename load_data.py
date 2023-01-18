@@ -1,11 +1,11 @@
-def load_data():
+def load_data(train, test_data, test_labels):
     import numpy as np
     import pandas as pd
     import torch
 
-    df_train = pd.read_csv('train.csv')
-    df_test = pd.read_csv('test.csv')
-    df_ytest = pd.read_csv('sample_submission.csv')
+    df_train = pd.read_csv(train)
+    df_test = pd.read_csv(test_data)
+    df_ytest = pd.read_csv(test_labels)
     df_test['transported']=df_ytest.iloc[:,1].values
 
     df_train=pd.DataFrame.dropna(df_train)
