@@ -4,13 +4,13 @@ def analyze(df_train):
     '''
 
     import numpy as np
-    
+    import matplotlib.pyplot as plt
     import seaborn as sns
     from scipy.stats import norm
     import pandas as pd
 
     # pie plots for categorical variables
-    import matplotlib.pyplot as plt
+    
     fig, axis = plt.subplots(1, 2)
 
     for num, name in enumerate(["HomePlanet", "Destination"]):
