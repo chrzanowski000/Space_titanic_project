@@ -140,9 +140,8 @@ def analyze(file_name):
     print("It might have also depended from numerical part of ID, but I have no idea how to deal with it.")
 
     # and now lets plot correlations
-
     corr_matrix = df_train.corr(numeric_only = True)
-    sns.heatmap(corr_matrix)
+    sns.heatmap(corr_matrix,square=True, linewidths=.5, vmin=-1, vmax=1, annot=True, cbar_kws={"shrink": .5})
     plt.title('Correlation matrix')
     plt.show()
 
