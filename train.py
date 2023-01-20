@@ -8,19 +8,15 @@ import pandas as pd
 
 
 def train(network, train_data, test_data, test = False, epoch_num = 10):
-    #define globaly used dtype and device
-    device_ = torch.device('cpu')
-    dtype_ = torch.float64
-    print(train_data[0][0])
     '''
     description
     '''
-    model = network
-    model = model.to(dtype=dtype_)   
+    #define globaly used dtype and device
+    device_ = torch.device('cpu')
+    dtype_ = torch.float64
     # configuring the net
-    
-
-
+    model = network
+    model = model.to(dtype=dtype_, device=device_)   
     criterion = torch.nn.BCELoss()          # binary cross entropy loss function
     learning_rate = 3e-4                    # initial lr, internet says best for Adam
     optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
@@ -35,12 +31,13 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
         print(f'epoch nr {epoch}')
         for x, y in train_data:
                 optimizer.zero_grad()           # clear gradient of loss function
-                x = x.to(dtype=dtype_)
-                y = y.to(dtype=dtype_)
+                x = x.to(dtype=dtype_, device=device_)
+                y = y.to(dtype=dtype_, device=device_)
                 results = model(x)              # calculate predictions
                 loss = criterion(results, y)    # calculate loss
                 loss.backward()                 # calculate gradient
                 optimizer.step()                # update parameters
+                
                 
                 predictions = np.append(predictions, results.data)
                 predictions =  np.where(predictions < 0.5, 0, 1)
@@ -49,6 +46,7 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
     # plot loss function on test data
     
     if test:
+            print(metrics.classification_report(targets, predictions, digits=4))
             fig, ax = plt.subplots()     
             epoch_array = np.arange(1,epoch_num+1)
             loss_list_array = np.array(loss_list)
@@ -56,11 +54,15 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
             plt.xlabel("Number of epochs")
             plt.grid()
             plt.ylabel("Loss")
-            plt.show()
+            #plt.show()
+            plt.savefig('loss.pdf')
+            
             """
+            fig, ax = plt.subplots() 
             plt.scatter(targets, targets)
             plt.scatter(predictions, predictions)
             plt.show()
+            plt.savefig('TP.pdf')
             # the precision and recall, among other metrics
             metrics_table=metrics.classification_report(targets, predictions, digits=4)
             wrong_list = [np.shape(test_data)[0] - c for c in correct_list]
@@ -77,7 +79,7 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
             plt.title("Accuracy of the net on test data")
             plt.legend(names, bbox_to_anchor = [1, 1])
             plt.grid()
-            plt.show()"""
-    
-    # and finally
+            plt.show()
+            plt.savefig('CW.pdf')
+            """
     return model
