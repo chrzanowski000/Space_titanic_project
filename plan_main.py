@@ -7,7 +7,7 @@ def main():
     #Analyze.analyze(file_name='train.csv')
     #network = initialize_network.Net(27, 100, 80, 100, 1)
     network = initialize_network.Net(27, 1)
-    train.train(network = network, train_data=train_data, test_data=test_data, test=True, epoch_num=30)
+    train.train(network = network, train_data=train_data, test_data=test_data, test=True, epoch_num=2)
     
 if __name__ == "__main__":
     main()
