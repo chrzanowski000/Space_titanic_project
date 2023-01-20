@@ -18,8 +18,9 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
     model = network
     model = model.to(dtype=dtype_, device=device_)   
     criterion = torch.nn.BCELoss()          # binary cross entropy loss function
-    learning_rate = 3e-4                    # initial lr, internet says best for Adam
-    optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate)
+    learning_rate = 3e-4
+    weight_decay = 0.001 # for ADAM optimizer
+    optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate, weight_decay=weight_decay)
 
     # learning loop
 
@@ -43,20 +44,23 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
                 predictions =  np.where(predictions < 0.5, 0, 1)
                 targets = np.append(targets, y.data)
         loss_list.append(loss.data) # store loss
+        print(loss.data.numpy())
     # plot loss function on test data
     
     if test:
             print(metrics.classification_report(targets, predictions, digits=4))
+            
             fig, ax = plt.subplots()     
             epoch_array = np.arange(1,epoch_num+1)
             loss_list_array = np.array(loss_list)
+            #print(loss_list_array)
             sns.lineplot(x=epoch_array,y=loss_list_array, ax=ax)
             plt.xlabel("Number of epochs")
             plt.grid()
             plt.ylabel("Loss")
-            #plt.show()
             #plt.savefig('loss.pdf')
-            plt.savefig('loss.png')
+            plt.savefig('loss.jpeg')
+            #plt.show()
             
             """
             fig, ax = plt.subplots() 

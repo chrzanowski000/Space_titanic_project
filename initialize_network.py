@@ -33,14 +33,14 @@ class Net(nn.Module):
         # super function. It inherits from nn.Module and we can access everything in nn.Module
         super(Net,self).__init__()
         # Linear function.
-        self.linear1 = nn.Linear(input_size,100)
-        self.linear2 = nn.Linear(100,100)
-        self.linear3 = nn.Linear(100,100)
-        self.linear4 = nn.Linear(100,output_size)
+        self.linear1 = nn.Linear(input_size,200)
+        self.linear2 = nn.Linear(200,180)
+        self.linear3 = nn.Linear(180,200)
+        self.linear4 = nn.Linear(200,1)
 
     def forward(self,x):
-        y = self.linear1(x)
-        y = self.linear2(y)
-        y = self.linear3(y)
-        y = self.linear4(y)
+        y = F.leaky_relu(self.linear1(x), 0.2)
+        y = F.leaky_relu(self.linear2(y), 0.2)
+        y = F.leaky_relu(self.linear3(y), 0.2)
+        y = F.leaky_relu(self.linear4(y), 0.2)
         return torch.sigmoid(y)
