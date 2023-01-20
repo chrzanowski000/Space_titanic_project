@@ -55,7 +55,8 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
             plt.grid()
             plt.ylabel("Loss")
             #plt.show()
-            plt.savefig('loss.pdf')
+            #plt.savefig('loss.pdf')
+            plt.savefig('loss.png')
             
             """
             fig, ax = plt.subplots() 
