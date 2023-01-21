@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 
-def train(network, train_data, test_data, test = False, epoch_num = 10):
+def train(network, train_data, test_data, epoch_num, learning_rate, test = False):
     '''
     description
     '''
@@ -18,7 +18,7 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
     model = network
     model = model.to(dtype=dtype_, device=device_)   
     criterion = torch.nn.BCELoss()          # binary cross entropy loss function
-    learning_rate = 3e-2
+    learning_rate = learning_rate
     weight_decay = 0.001 # for ADAM optimizer
     optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate, weight_decay=weight_decay)
 
