@@ -18,43 +18,50 @@ def train(network, train_data, test_data, test = False, epoch_num = 10):
     model = network
     model = model.to(dtype=dtype_, device=device_)   
     criterion = torch.nn.BCELoss()          # binary cross entropy loss function
-    learning_rate = 3e-4
+    learning_rate = 3e-2
     weight_decay = 0.001 # for ADAM optimizer
     optimizer = torch.optim.Adam(model.parameters(), lr = learning_rate, weight_decay=weight_decay)
 
     # learning loop
 
     correct_list = []
-    predictions = np.array([])
-    targets = np.array([])
     loss_list = []
+    accuracy_list = []
     for epoch in range(epoch_num):
         print(f'epoch nr {epoch}')
+        predictions = np.array([])
+        targets = np.array([])
         for x, y in train_data:
                 optimizer.zero_grad()           # clear gradient of loss function
                 x = x.to(dtype=dtype_, device=device_)
                 y = y.to(dtype=dtype_, device=device_)
                 results = model(x)              # calculate predictions
+                #results = torch.where(results < 0.5, 0, 1).to(dtype=dtype_, device=device_)
                 loss = criterion(results, y)    # calculate loss
                 loss.backward()                 # calculate gradient
                 optimizer.step()                # update parameters
                 
-                
                 predictions = np.append(predictions, results.data)
                 predictions =  np.where(predictions < 0.5, 0, 1)
                 targets = np.append(targets, y.data)
+                
         loss_list.append(loss.data) # store loss
-        print(loss.data.numpy())
+        acc = metrics.accuracy_score(predictions,targets)
+        print(f'loss: {loss.data.numpy()}')
+        accuracy_list.append(acc)
+        print(f'accuracy: {acc}')
+        
     # plot loss function on test data
     
     if test:
-            print(metrics.classification_report(targets, predictions, digits=4))
+            print(metrics.classification_report(targets, predictions, digits=2))
             
             fig, ax = plt.subplots()     
             epoch_array = np.arange(1,epoch_num+1)
             loss_list_array = np.array(loss_list)
             #print(loss_list_array)
             sns.lineplot(x=epoch_array,y=loss_list_array, ax=ax)
+            sns.lineplot(x=epoch_array,y=accuracy_list, ax=ax)
             plt.xlabel("Number of epochs")
             plt.grid()
             plt.ylabel("Loss")

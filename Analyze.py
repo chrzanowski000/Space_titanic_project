@@ -1,4 +1,5 @@
 def analyze(file_name):
+    
     '''
     Analyze train data.
     '''
