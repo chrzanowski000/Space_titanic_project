@@ -33,14 +33,28 @@ class Net(nn.Module):
         # super function. It inherits from nn.Module and we can access everything in nn.Module
         super(Net,self).__init__()
         # Linear function.
-        self.linear1 = nn.Linear(input_size,100)
-        self.linear2 = nn.Linear(100,100)
-        self.linear3 = nn.Linear(100,100)
-        self.linear4 = nn.Linear(100,output_size)
+        self.linear1 = nn.Linear(input_size,200)
+        self.linear2 = nn.Linear(200,800)
+        self.linear3 = nn.Linear(800,200)
+        self.linear4 = nn.Linear(200,output_size)
+        self.norm = torch.nn.LayerNorm([200])
 
     def forward(self,x):
-        y = self.linear1(x)
-        y = self.linear2(y)
-        y = self.linear3(y)
-        y = self.linear4(y)
-        return torch.sigmoid(y)
+
+        """        
+        y = F.leaky_relu(self.linear1(x), 0.2)
+        y = F.leaky_relu(self.linear2(y), 0.2)
+        y = F.leaky_relu(self.linear3(y), 0.2)
+        y = F.leaky_relu(self.linear4(y), 0.2)
+        """
+        """
+        y = F.relu(self.linear1(x))
+        y = F.relu(self.linear2(y))
+        y = F.relu(self.linear3(y))
+        y = F.relu(self.linear4(y))
+        """
+        y = self.norm(torch.tanh(self.linear1(x)))
+        y = torch.tanh(self.linear2(y))
+        y = self.norm(torch.tanh(self.linear3(y)))
+        y = torch.sigmoid(self.linear4(y))
+        return y
