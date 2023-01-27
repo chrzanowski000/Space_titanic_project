@@ -1,15 +1,30 @@
-def load_data(train, test_data, test_labels):
-    import numpy as np
-    import pandas as pd
-    import torch
+import numpy as np
+import pandas as pd
+import torch
+from torch.utils.data import DataLoader #Dataloader module
+from torch.utils.data import Dataset # Dataset module
 
-    df_train = pd.read_csv(train)
-    df_test = pd.read_csv(test_data)
-    df_ytest = pd.read_csv(test_labels)
-    df_test['transported']=df_ytest.iloc[:,1].values
+class load_Dataset(Dataset):
+    def __init__(self,train, test_data, test_labels):
+        self.df_train = pd.read_csv(train)
+        self.df_test = pd.read_csv(test_data)
+        self.df_ytest = pd.read_csv(test_labels)
+        self.df_test['transported']=df_ytest.iloc[:,1].values
 
-    df_train=pd.DataFrame.dropna(df_train)
-    df_test=pd.DataFrame.dropna(df_test)
+        self.df_train=pd.DataFrame.dropna(self.df_train)
+        self.df_test=pd.DataFrame.dropna(self.df_test)
+        
+        test_data=[]
+        x=encoding(df_test)
+        for i in range(len(x)):
+            test_data.append([torch.tensor(np.array(tuple(x[i]))), torch.tensor([df_test.iloc[i,13]])])
+
+        train_data=[]
+        x=encoding(df_train)
+        for i in range(len(x)):
+            train_data.append([torch.tensor(np.array(tuple(x[i])), requires_grad=True, dtype=torch.float64), torch.tensor([df_train.iloc[i,13]], requires_grad=True, dtype=torch.float64)])
+
+        
 
     def encoding_categories(sequences, categories):  #I put into this function a list of categories we want to encode
         results = np.zeros((len(sequences), len(categories))) # Creates an all-zero matrix of shape (len(sequences), len(categories))
@@ -61,18 +76,17 @@ def load_data(train, test_data, test_labels):
             df.iloc[:,7].values,df.iloc[:,8].values,df.iloc[:,9].values,df.iloc[:,10].values,df.iloc[:,11].values ]))
         
         return data
+    
+            
+    def __len__(self):
+        return len(self.data[0])
 
-    test_data=[]
-    x=encoding(df_test)
-    for i in range(len(x)):
-        test_data.append([torch.tensor(np.array(tuple(x[i]))), torch.tensor([df_test.iloc[i,13]])])
+    def __getitem__(self, index):
+        x=self.data[0][index]
+        y = self.data[1][index]
+        return (x, y)
 
-    train_data=[]
-    x=encoding(df_train)
-    for i in range(len(x)):
-        train_data.append([torch.tensor(np.array(tuple(x[i])), requires_grad=True, dtype=torch.float64), torch.tensor([df_train.iloc[i,13]], requires_grad=True, dtype=torch.float64)])
 
-    return train_data, test_data
 
     
 

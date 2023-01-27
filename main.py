@@ -15,6 +15,9 @@ def phrase_args():
 def main():
     epoch_num_, analyze_, lr_rate_=phrase_args()
     train_data, test_data = load_data.load_data(train='train.csv', test_data='test.csv', test_labels='sample_submission.csv')
+    print(train_data[:1])
+    dataset_train = load_data.Data_Set_train(train_data)
+    print(dataset_train)
     if analyze_:
         Analyze.analyze(file_name='train.csv')
     network = initialize_network.Net(27, 1)
