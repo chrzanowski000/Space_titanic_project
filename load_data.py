@@ -4,29 +4,29 @@ import torch
 from torch.utils.data import DataLoader #Dataloader module
 from torch.utils.data import Dataset # Dataset module
 
-class load_Dataset(Dataset):
+class load_Dataset():
     def __init__(self,train, test_data, test_labels):
         self.df_train = pd.read_csv(train)
         self.df_test = pd.read_csv(test_data)
         self.df_ytest = pd.read_csv(test_labels)
-        self.df_test['transported']=df_ytest.iloc[:,1].values
+        self.df_test['transported']=self.df_ytest.iloc[:,1].values
 
         self.df_train=pd.DataFrame.dropna(self.df_train)
         self.df_test=pd.DataFrame.dropna(self.df_test)
         
         test_data=[]
-        x=encoding(df_test)
+        x=self.encoding(self.df_test)
         for i in range(len(x)):
-            test_data.append([torch.tensor(np.array(tuple(x[i]))), torch.tensor([df_test.iloc[i,13]])])
+            test_data.append([torch.tensor(np.array(tuple(x[i]))), torch.tensor([self.df_test.iloc[i,13]])])
 
         train_data=[]
-        x=encoding(df_train)
+        x=self.encoding(self.df_train)
         for i in range(len(x)):
-            train_data.append([torch.tensor(np.array(tuple(x[i])), requires_grad=True, dtype=torch.float64), torch.tensor([df_train.iloc[i,13]], requires_grad=True, dtype=torch.float64)])
+            train_data.append([torch.tensor(np.array(tuple(x[i])), requires_grad=True, dtype=torch.float64), torch.tensor([self.df_train.iloc[i,13]], requires_grad=True, dtype=torch.float64)])
 
-        
+        print(train_data)
 
-    def encoding_categories(sequences, categories):  #I put into this function a list of categories we want to encode
+    def encoding_categories(self, sequences, categories):  #I put into this function a list of categories we want to encode
         results = np.zeros((len(sequences), len(categories))) # Creates an all-zero matrix of shape (len(sequences), len(categories))
         for i, sequence in enumerate(sequences): # Sets specific indices of results to 1
             for j in range(len(categories)):
@@ -34,7 +34,7 @@ class load_Dataset(Dataset):
                     results[i,j]=1
         return np.array(results)
 
-    def encoding(df):
+    def encoding(self,df):
         #convert true/false values to 1/0
         df.iloc[:,13]=1*df.iloc[:,13]
         df.iloc[:,2]=1*df.iloc[:,2]
@@ -44,8 +44,8 @@ class load_Dataset(Dataset):
         for i in [5,7,8,9,10,11]:  
             df.iloc[:,i] = df.iloc[:,i]/max(df.iloc[:,i])
 
-        home_planet=encoding_categories(df.iloc[:,1],['Europa','Earth','Mars'])
-        destination=encoding_categories(df.iloc[:,4],['TRAPPIST-1e','PSO J318.5-22','55 Cancri e'])
+        home_planet=self.encoding_categories(df.iloc[:,1],['Europa','Earth','Mars'])
+        destination=self.encoding_categories(df.iloc[:,4],['TRAPPIST-1e','PSO J318.5-22','55 Cancri e'])
 
         #Passenger ID is divided into group number (describing the whole group) and group ID (passenger's number inside their group)
         group, group_id=[],[]
@@ -67,8 +67,8 @@ class load_Dataset(Dataset):
                 num.append(int(x.split('/')[1]))
                 side.append(x.split('/')[2])
         num=np.array(num)
-        deck=encoding_categories(deck,['A','B','C','D','E','F','G','T'])
-        side=encoding_categories(side,['P','S'])
+        deck=self.encoding_categories(deck,['A','B','C','D','E','F','G','T'])
+        side=self.encoding_categories(side,['P','S'])
 
         data= np.transpose(np.array([group, group_id, home_planet[:,0],home_planet[:,1],home_planet[:,2],df.iloc[:,2].values,num,
             deck[:,0], deck[:,1], deck[:,2],deck[:,3],deck[:,4],deck[:,5],deck[:,6],deck[:,7],side[:,0],
@@ -77,7 +77,7 @@ class load_Dataset(Dataset):
         
         return data
     
-            
+    """        
     def __len__(self):
         return len(self.data[0])
 
@@ -85,7 +85,7 @@ class load_Dataset(Dataset):
         x=self.data[0][index]
         y = self.data[1][index]
         return (x, y)
-
+"""
 
 
     
