@@ -34,6 +34,7 @@ def main():
         device_ = torch.device("mps")
         print (f"Using {device_}")
     else:
+        print ("CUDA device not found.")
         print ("MPS device not found.")
         device_ = torch.device("cpu")
         print (f"Using {device_}")

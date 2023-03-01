@@ -13,7 +13,7 @@ def train(network, train_data, test_data, epoch_num, learning_rate, device, test
     '''
     #define globaly used dtype and device
     device_ = device
-    dtype_ = torch.float32ż
+    dtype_ = torch.float32
     # configuring the net
     model = network
     model = model.to(dtype=dtype_, device=device_)   
