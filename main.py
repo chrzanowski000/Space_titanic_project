@@ -1,8 +1,9 @@
-import load_data
+import data_maker
 import Analyze
 import initialize_network
 import train
 import argparse
+import Data_Set
 
 def phrase_args():
     parser = argparse.ArgumentParser()
@@ -13,8 +14,11 @@ def phrase_args():
     return args.epoch_num, args.analyze, args.lr_rate
 
 def main():
-    epoch_num_, analyze_, lr_rate_=phrase_args()
-    load_data.load_Dataset(train='train.csv', test_data='test.csv', test_labels='sample_submission.csv')
+    epoch_num_, analyze_, lr_rate_= phrase_args()
+    data_class = data_maker.load_Dataset(train='train.csv', test_data='test.csv', test_labels='sample_submission.csv')
+    train_data, test_data = data_class.make_data()
+    print(train_data)
+    
     if analyze_:
         Analyze.analyze(file_name='train.csv')
     network = initialize_network.Net(27, 1)

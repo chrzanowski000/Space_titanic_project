@@ -13,18 +13,6 @@ class load_Dataset():
 
         self.df_train=pd.DataFrame.dropna(self.df_train)
         self.df_test=pd.DataFrame.dropna(self.df_test)
-        
-        test_data=[]
-        x=self.encoding(self.df_test)
-        for i in range(len(x)):
-            test_data.append([torch.tensor(np.array(tuple(x[i]))), torch.tensor([self.df_test.iloc[i,13]])])
-
-        train_data=[]
-        x=self.encoding(self.df_train)
-        for i in range(len(x)):
-            train_data.append([torch.tensor(np.array(tuple(x[i])), requires_grad=True, dtype=torch.float64), torch.tensor([self.df_train.iloc[i,13]], requires_grad=True, dtype=torch.float64)])
-
-        print(train_data)
 
     def encoding_categories(self, sequences, categories):  #I put into this function a list of categories we want to encode
         results = np.zeros((len(sequences), len(categories))) # Creates an all-zero matrix of shape (len(sequences), len(categories))
@@ -77,15 +65,19 @@ class load_Dataset():
         
         return data
     
-    """        
-    def __len__(self):
-        return len(self.data[0])
+    def make_data(self):
+        
+        test_data=[]
+        x=self.encoding(self.df_test)
+        for i in range(len(x)):
+            test_data.append([torch.tensor(np.array(tuple(x[i]))), torch.tensor([self.df_test.iloc[i,13]])])
 
-    def __getitem__(self, index):
-        x=self.data[0][index]
-        y = self.data[1][index]
-        return (x, y)
-"""
+        train_data=[]
+        x=self.encoding(self.df_train)
+        for i in range(len(x)):
+            train_data.append([torch.tensor(np.array(tuple(x[i])), requires_grad=True, dtype=torch.float64), torch.tensor([self.df_train.iloc[i,13]], requires_grad=True, dtype=torch.float64)])
+
+        return train_data, test_data
 
 
     
