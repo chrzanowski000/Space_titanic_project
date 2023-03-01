@@ -7,13 +7,13 @@ import numpy as np
 import pandas as pd
 
 
-def train(network, train_data, test_data, epoch_num, learning_rate, test = False):
+def train(network, train_data, test_data, epoch_num, learning_rate, device, test = False):
     '''
     description
     '''
     #define globaly used dtype and device
-    device_ = torch.device('cpu')
-    dtype_ = torch.float64
+    device_ = device
+    dtype_ = torch.float32ż
     # configuring the net
     model = network
     model = model.to(dtype=dtype_, device=device_)   
@@ -41,13 +41,13 @@ def train(network, train_data, test_data, epoch_num, learning_rate, test = False
                 loss.backward()                 # calculate gradient
                 optimizer.step()                # update parameters
                 
-                predictions = np.append(predictions, results.data)
+                predictions = np.append(predictions, results.cpu().detach().numpy())
                 predictions =  np.where(predictions < 0.5, 0, 1)
-                targets = np.append(targets, y.data)
+                targets = np.append(targets, y.cpu().detach().numpy())
                 
-        loss_list.append(loss.data) # store loss
+        loss_list.append(loss.cpu().detach().numpy()) # store loss
         acc = metrics.accuracy_score(predictions,targets)
-        print(f'loss: {loss.data.numpy()}')
+        print(f'loss: {loss.cpu().detach().numpy()}')
         accuracy_list.append(acc)
         print(f'accuracy: {acc}')
         
