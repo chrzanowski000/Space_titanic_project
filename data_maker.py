@@ -70,12 +70,12 @@ class load_Dataset():
         test_data=[]
         x=self.encoding(self.df_test)
         for i in range(len(x)):
-            test_data.append([torch.tensor(np.array(tuple(x[i]))), torch.tensor([self.df_test.iloc[i,13]])])
+            test_data.append([np.array(tuple(x[i])), [self.df_test.iloc[i,13]]])
 
         train_data=[]
         x=self.encoding(self.df_train)
         for i in range(len(x)):
-            train_data.append([torch.tensor(np.array(tuple(x[i])), requires_grad=True, dtype=torch.float64), torch.tensor([self.df_train.iloc[i,13]], requires_grad=True, dtype=torch.float64)])
+            train_data.append([np.array(tuple(x[i])), [self.df_train.iloc[i,13]]])
 
         return train_data, test_data
 
