@@ -10,8 +10,8 @@ class Dataset_maker(Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
-        x = torch.tensor(self.data[index][0], requires_grad=True, dtype=torch.float64)
-        y_label = torch.tensor(self.data[index][1], requires_grad=True, dtype=torch.float64)
+        x = torch.tensor(self.data[index][0], requires_grad=False, dtype=torch.float64)
+        y_label = torch.tensor(self.data[index][1], requires_grad=False, dtype=torch.float64)
 
         if self.transform:
             x = self.transform(x)
