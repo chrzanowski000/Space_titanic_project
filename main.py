@@ -3,7 +3,12 @@ import Analyze
 import initialize_network
 import train
 import argparse
-import Data_Set
+import dataset
+import torch
+from torch.utils.data import DataLoader #Dataloader module
+import torchvision.transforms as transforms #transformations
+
+
 
 def phrase_args():
     parser = argparse.ArgumentParser()
@@ -17,14 +22,19 @@ def main():
     epoch_num_, analyze_, lr_rate_= phrase_args()
     data_class = data_maker.load_Dataset(train='train.csv', test_data='test.csv', test_labels='sample_submission.csv')
     train_data, test_data = data_class.make_data()
-    print(train_data)
+    
+    transform = transforms.Compose([transforms.ToTensor()])
+    train_dataset=dataset.Dataset_maker(train_data, transform=transform)
+    train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=16, shuffle=True, num_workers=1)
+    #print(train_data[2][1]) # index , (x, y)
+    print(train_dataset[0])
     
     if analyze_:
         Analyze.analyze(file_name='train.csv')
-    network = initialize_network.Net(27, 1)
-    print(f'calculating for: {epoch_num_} epochs')
-    print(f'learning rate:{lr_rate_}')
-    train.train(network = network, train_data=train_data, test_data=test_data,learning_rate=lr_rate_, epoch_num=epoch_num_, test=True)
+    #network = initialize_network.Net(27, 1)
+    #print(f'calculating for: {epoch_num_} epochs')
+    #print(f'learning rate:{lr_rate_}')
+    #train.train(network = network, train_data=train_data, test_data=test_data,learning_rate=lr_rate_, epoch_num=epoch_num_, test=True)
     
 if __name__ == "__main__":
     main()

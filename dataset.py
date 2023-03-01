@@ -1,7 +1,7 @@
 #Dataset class
 from torch.utils.data import Dataset # Dataset module
-class BloodCell_train(Dataset):
-    def __init__(self, data ,transform):
+class Dataset_maker(Dataset):
+    def __init__(self, data ,transform=False):
         self.data = data
         self.transform = transform
 
