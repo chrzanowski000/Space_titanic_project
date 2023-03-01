@@ -23,11 +23,13 @@ def main():
     data_class = data_maker.load_Dataset(train='train.csv', test_data='test.csv', test_labels='sample_submission.csv')
     train_data, test_data = data_class.make_data()
     
-    transform = transforms.Compose([transforms.ToTensor()])
-    train_dataset=dataset.Dataset_maker(train_data, transform=transform)
+    train_dataset=dataset.Dataset_maker(train_data)
     train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=16, shuffle=True, num_workers=1)
-    #print(train_data[2][1]) # index , (x, y)
-    print(train_dataset[0])
+    test_dataset=dataset.Dataset_maker(test_data)
+    test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=16, shuffle=True, num_workers=1)
+    
+    for i, y in test_dataloader:
+        print(i, y)
     
     if analyze_:
         Analyze.analyze(file_name='train.csv')
