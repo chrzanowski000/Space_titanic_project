@@ -4,8 +4,10 @@ import initialize_network
 import train
 import argparse
 import dataset
+import torch
 from torch.utils.data import DataLoader #Dataloader module
 import torchvision.transforms as transforms #transformations
+
 
 
 def phrase_args():
@@ -23,7 +25,7 @@ def main():
     
     transform = transforms.Compose([transforms.ToTensor()])
     train_dataset=dataset.Dataset_maker(train_data, transform=transform)
-    #train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=16, shuffle=True, num_workers=1)
+    train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=16, shuffle=True, num_workers=1)
     #print(train_data[2][1]) # index , (x, y)
     print(train_dataset[0])
     
