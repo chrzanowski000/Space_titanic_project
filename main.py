@@ -8,12 +8,11 @@ import torch
 from torch.utils.data import DataLoader #Dataloader module
 import torchvision.transforms as transforms #transformations
 
-
-
 def phrase_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-e","--epoch_num", help="Input number of epochs", default=5, type=int)
-    parser.add_argument("-lr","--lr_rate", help="Input learning rate", default=5, type=float)
+    parser.add_argument("-lr","--lr_rate", help="Input learning rate", default=0.003
+                        , type=float)
     parser.add_argument("-a","--analyze", help="Do you wan to analyze data", default=False, type=bool)
     args = parser.parse_args()
     return args.epoch_num, args.analyze, args.lr_rate
@@ -50,9 +49,9 @@ def main():
     train_data, test_data = data_class.make_data()
     
     train_dataset=dataset.Dataset_maker(train_data)
-    train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=1, shuffle=True, num_workers=2)
+    train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=8, shuffle=True, num_workers=2)
     test_dataset=dataset.Dataset_maker(test_data)
-    test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=1, shuffle=True, num_workers=2)
+    test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=8, shuffle=True, num_workers=2)
     
     
     if analyze_:

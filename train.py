@@ -64,9 +64,9 @@ def train(network, train_data, test_data, epoch_num, learning_rate, device, test
             sns.lineplot(x=epoch_array,y=accuracy_list, ax=ax)
             plt.xlabel("Number of epochs")
             plt.grid()
-            plt.ylabel("Loss")
+            plt.legend(["Loss", "Accuracy"], bbox_to_anchor = [1,1])
             #plt.savefig('loss.pdf')
-            plt.savefig('loss.jpeg')
+            plt.savefig('Loss.jpeg')
             #plt.show()
             
             """

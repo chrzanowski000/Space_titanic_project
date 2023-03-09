@@ -33,11 +33,12 @@ class Net(nn.Module):
         # super function. It inherits from nn.Module and we can access everything in nn.Module
         super(Net,self).__init__()
         # Linear function.
-        self.linear1 = nn.Linear(input_size,200)
-        self.linear2 = nn.Linear(200,800)
-        self.linear3 = nn.Linear(800,200)
-        self.linear4 = nn.Linear(200,output_size)
-        self.norm = torch.nn.LayerNorm([200])
+        self.linear1 = nn.Linear(input_size,40)
+        self.linear2 = nn.Linear(40,80)
+        #self.linear3 = nn.Linear(500,100)
+        self.linear3 = nn.Linear(80,output_size)
+        self.norm10 = torch.nn.LayerNorm([10])
+        self.norm50 = torch.nn.LayerNorm([30])
 
     def forward(self,x):
 
@@ -45,16 +46,19 @@ class Net(nn.Module):
         y = F.leaky_relu(self.linear1(x), 0.2)
         y = F.leaky_relu(self.linear2(y), 0.2)
         y = F.leaky_relu(self.linear3(y), 0.2)
-        y = F.leaky_relu(self.linear4(y), 0.2)
-        """
-        """
-        y = F.relu(self.linear1(x))
-        y = F.relu(self.linear2(y))
-        y = F.relu(self.linear3(y))
-        y = F.relu(self.linear4(y))
-        """
-        y = self.norm(torch.tanh(self.linear1(x)))
-        y = torch.tanh(self.linear2(y))
-        y = self.norm(torch.tanh(self.linear3(y)))
         y = torch.sigmoid(self.linear4(y))
+        """
+        
+        y = F.leaky_relu(self.linear1(x))
+        y = F.leaky_relu(self.linear2(y))
+        #y = F.relu(self.linear3(y))
+        y = torch.sigmoid(self.linear3(y))
+        
+        """
+        y = self.norm50(torch.tanh(self.linear1(x)))
+        y = torch.sigmoid(self.linear2(y))
+        y = self.norm10(torch.tanh(self.linear3(y)))
+        y = torch.sigmoid(self.linear4(y))
+        """
+
         return y
